@@ -3,6 +3,12 @@ package com.kellum.MovieCatalogue.model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
+import javax.persistence.Entity;
+import org.hibernate.annotations.Polymorphism;
+import org.hibernate.annotations.PolymorphismType;
+
+@Entity
+@Polymorphism(type = PolymorphismType.EXPLICIT)
 public class VideoGame extends Media {
     @AllArgsConstructor
     enum Console {
