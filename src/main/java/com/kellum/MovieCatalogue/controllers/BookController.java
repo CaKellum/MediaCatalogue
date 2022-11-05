@@ -44,7 +44,7 @@ public class BookController implements ControllerInterface<BookRepository, Book>
     }
 
     @Override
-    public Book getByTitel(String title) {
+    public Book getByTitle(String title) {
         // TODO Auto-generated method stub
         return null;
     }

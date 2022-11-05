@@ -64,7 +64,7 @@ public class MovieController implements ControllerInterface<MovieRepository, Mov
     }
 
     @Override
-    public Movie getByTitel(String title) {
+    public Movie getByTitle(String title) {
         // TODO Auto-generated method stub
         return null;
     }

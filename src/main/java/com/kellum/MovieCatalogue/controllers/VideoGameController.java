@@ -85,7 +85,7 @@ public class VideoGameController implements ControllerInterface<VideoGameReposit
     }
 
     @Override
-    public VideoGame getByTitel(String title) {
+    public VideoGame getByTitle(String title) {
         // TODO Auto-generated method stub
         return null;
     }

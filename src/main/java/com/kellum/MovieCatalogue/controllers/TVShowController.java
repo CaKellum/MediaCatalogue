@@ -64,7 +64,7 @@ public class TVShowController implements ControllerInterface<TVShowRepository, T
     }
 
     @Override
-    public TvShow getByTitel(String title) {
+    public TvShow getByTitle(String title) {
         // TODO Auto-generated method stub
         return null;
     }

@@ -66,7 +66,7 @@ public class MusicController implements ControllerInterface<MusicRepository, Mus
     }
 
     @Override
-    public Music getByTitel(String title) {
+    public Music getByTitle(String title) {
         // TODO Auto-generated method stub
         return null;
     }
