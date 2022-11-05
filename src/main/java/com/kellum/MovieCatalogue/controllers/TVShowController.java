@@ -65,15 +65,13 @@ public class TVShowController implements ControllerInterface<TVShowRepository, T
 
     @GetMapping(value = "/tv/{title}")
     @Override
-    public TvShow getByTitle(String title) {
-        List<TvShow> tvAll = tvShowRepository.findAll();
-        tvAll.removeIf(tvShow -> (tvShow.getTitle().equals(title)));
-        return getById(tvAll.get(0).getId());
+    public TvShow getByTitle(@PathVariable String title) {
+        return getById(getIdFromTitle(title));
     }
 
     @GetMapping(value = "/tv/id/{title}")
     @Override
-    public Long getIdFromTitle(String title) {
+    public Long getIdFromTitle(@PathVariable String title) {
         List<TvShow> tvAll = tvShowRepository.findAll();
         tvAll.removeIf(tvShow -> (tvShow.getTitle().equals(title)));
         return tvAll.get(0).getId();
