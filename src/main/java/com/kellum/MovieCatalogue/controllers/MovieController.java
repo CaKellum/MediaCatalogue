@@ -44,7 +44,7 @@ public class MovieController implements ControllerInterface<MovieRepository, Mov
                 .orElseThrow(() -> new MediaNotFoundException(MediaCategory.MOVIE, Long.toString(id)));
     }
 
-    @PutMapping(value = "movies/{id}")
+    @PutMapping(value = "/movies/{id}")
     @Override
     public Movie replace(@PathVariable Long id, @RequestBody Movie newElement) {
         return movieRepository.findById(id).map(movie -> {
