@@ -73,7 +73,7 @@ public class TVShowController implements ControllerInterface<TVShowRepository, T
     @Override
     public Long getIdFromTitle(@PathVariable String title) {
         List<TvShow> tvAll = tvShowRepository.findAll();
-        tvAll.removeIf(tvShow -> (tvShow.getTitle().equals(title)));
+        tvAll.removeIf(tvShow -> (!tvShow.getTitle().equals(title)));
         return tvAll.get(0).getId();
     }
 

@@ -75,7 +75,7 @@ public class MusicController implements ControllerInterface<MusicRepository, Mus
     @Override
     public Long getIdFromTitle(@PathVariable String title) {
         List<Music> allMusic = all();
-        allMusic.removeIf(music -> (music.getTitle().equals(title)));
+        allMusic.removeIf(music -> (!music.getTitle().equals(title)));
         return allMusic.get(0).getId();
     }
 }
