@@ -28,6 +28,8 @@ public class VideoGameController implements ControllerInterface<VideoGameReposit
         this.vgRepository = repository;
     }
 
+    //MARK: Get Lists of Games
+
     @GetMapping(value = "/video_games")
     @Override
     public List<VideoGame> all() {
@@ -40,11 +42,16 @@ public class VideoGameController implements ControllerInterface<VideoGameReposit
         vGames.removeIf(videoGame -> (!videoGame.getCategory().equals(console)));
         return vGames;
     }
+
+    //MARK: Add Video Game
+
     @PostMapping(value = "/video_games")
     @Override
     public VideoGame newElement(@RequestBody VideoGame newElement) {
         return vgRepository.save(newElement);
     }
+
+    //MARK: Get single video game
 
     @GetMapping(value = "/video_game/{id}")
     @Override
@@ -52,6 +59,8 @@ public class VideoGameController implements ControllerInterface<VideoGameReposit
         return vgRepository.findById(id)
                 .orElseThrow(() -> new MediaNotFoundException(MediaCategory.VIDEO_GAME, Long.toString(id)));
     }
+
+    //MARK: Update single video game
 
     @PutMapping(value = "/video_game/{id}")
     @Override
@@ -68,6 +77,8 @@ public class VideoGameController implements ControllerInterface<VideoGameReposit
             return vgRepository.save(newElement);
         });
     }
+
+    //MARK: Delete single video game
 
     @DeleteMapping(value = "/video_game/{id}")
     @Override
