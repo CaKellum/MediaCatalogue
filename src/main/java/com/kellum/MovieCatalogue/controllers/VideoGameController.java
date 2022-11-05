@@ -1,7 +1,9 @@
 package com.kellum.MovieCatalogue.controllers;
 
 import java.util.List;
+import java.util.function.Predicate;
 
+import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +17,8 @@ import com.kellum.MovieCatalogue.model.VideoGame;
 import com.kellum.MovieCatalogue.model.VideoGame.VGConsole;
 import com.kellum.MovieCatalogue.model.Media.MediaCategory;
 import com.kellum.MovieCatalogue.repositories.VideoGameRepository;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @RestController
 public class VideoGameController implements ControllerInterface<VideoGameRepository, VideoGame> {
@@ -30,6 +34,12 @@ public class VideoGameController implements ControllerInterface<VideoGameReposit
         return vgRepository.findAll();
     }
 
+    @GetMapping(value = "/video_games/{console}")
+    public List<VideoGame> getVideoGamesForConsole(@RequestParam String console) {
+        List<VideoGame> vGames = vgRepository.findAll();
+        vGames.removeIf(videoGame -> (!videoGame.getCategory().equals(console)));
+        return vGames;
+    }
     @PostMapping(value = "/video_games")
     @Override
     public VideoGame newElement(@RequestBody VideoGame newElement) {
