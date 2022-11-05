@@ -84,4 +84,10 @@ public class VideoGameController implements ControllerInterface<VideoGameReposit
         vgRepository.deleteById(id);
     }
 
+    @Override
+    public VideoGame getByTitel(String title) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

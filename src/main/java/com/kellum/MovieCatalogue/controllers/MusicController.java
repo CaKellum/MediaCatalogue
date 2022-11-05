@@ -64,4 +64,10 @@ public class MusicController implements ControllerInterface<MusicRepository, Mus
     public void delete(@PathVariable Long id) {
         musicRepository.deleteById(id);
     }
+
+    @Override
+    public Music getByTitel(String title) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

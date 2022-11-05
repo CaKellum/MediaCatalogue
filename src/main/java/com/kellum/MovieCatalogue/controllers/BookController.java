@@ -43,6 +43,12 @@ public class BookController implements ControllerInterface<BookRepository, Book>
                 .orElseThrow(() -> new MediaNotFoundException(MediaCategory.BOOK, Long.toString(id)));
     }
 
+    @Override
+    public Book getByTitel(String title) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
     @PutMapping(value = "/books/{id}")
     @Override
     public Book replace(@PathVariable Long id, @RequestBody Book newElement) {

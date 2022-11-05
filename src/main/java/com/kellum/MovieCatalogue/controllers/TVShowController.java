@@ -63,4 +63,10 @@ public class TVShowController implements ControllerInterface<TVShowRepository, T
         tvShowRepository.deleteById(id);
     }
 
+    @Override
+    public TvShow getByTitel(String title) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

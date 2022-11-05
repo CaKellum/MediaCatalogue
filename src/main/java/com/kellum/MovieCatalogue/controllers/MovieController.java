@@ -62,4 +62,10 @@ public class MovieController implements ControllerInterface<MovieRepository, Mov
     public void delete(@PathVariable Long id) {
         movieRepository.deleteById(id);
     }
+
+    @Override
+    public Movie getByTitel(String title) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }
