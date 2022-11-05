@@ -57,21 +57,23 @@ public class MovieController implements ControllerInterface<MovieRepository, Mov
         });
     }
 
-    @DeleteMapping(value = "movies/{id}")
+    @DeleteMapping(value = "/movies/{id}")
     @Override
     public void delete(@PathVariable Long id) {
         movieRepository.deleteById(id);
     }
 
+    @GetMapping(value = "/movies/{title}")
     @Override
-    public Movie getByTitle(String title) {
-        // TODO Auto-generated method stub
-        return null;
+    public Movie getByTitle(@PathVariable String title) {
+        return getById(getIdFromTitle(title));
     }
 
+    @GetMapping(value = "/movies/id/{title}")
     @Override
-    public Long getIdFromTitle(String title) {
-        // TODO Auto-generated method stub
-        return null;
+    public Long getIdFromTitle(@PathVariable String title) {
+        List<Movie> allMovie = all();
+        allMovie.removeIf(movie -> (!movie.getTitle().equals(title)));
+        return allMovie.get(0).getId();
     }
 }
