@@ -65,15 +65,17 @@ public class MusicController implements ControllerInterface<MusicRepository, Mus
         musicRepository.deleteById(id);
     }
 
+    @GetMapping(value = "/music/{title}")
     @Override
-    public Music getByTitle(String title) {
-        // TODO Auto-generated method stub
-        return null;
+    public Music getByTitle(@PathVariable String title) {
+        return getById(getIdFromTitle(title));
     }
 
+    @GetMapping(value = "/music/id/{title}")
     @Override
-    public Long getIdFromTitle(String title) {
-        // TODO Auto-generated method stub
-        return null;
+    public Long getIdFromTitle(@PathVariable String title) {
+        List<Music> allMusic = all();
+        allMusic.removeIf(music -> (music.getTitle().equals(title)));
+        return allMusic.get(0).getId();
     }
 }
