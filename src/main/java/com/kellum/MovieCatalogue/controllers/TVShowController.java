@@ -24,26 +24,26 @@ public class TVShowController implements ControllerInterface<TVShowRepository, T
         this.tvShowRepository = repository;
     }
 
-    @GetMapping("/tv")
+    @GetMapping(value = "/tv")
     @Override
     public List<TvShow> all() {
         return tvShowRepository.findAll();
     }
 
-    @PostMapping("/tv")
+    @PostMapping(value = "/tv")
     @Override
     public TvShow newElement(@RequestBody TvShow newElement) {
         return tvShowRepository.save(newElement);
     }
 
-    @GetMapping("/tv/{id}")
+    @GetMapping(value = "/tv/{id}")
     @Override
     public TvShow getById(@PathVariable Long id) {
         return tvShowRepository.findById(id)
                 .orElseThrow(() -> new MediaNotFoundException(MediaCategory.TV_SHOW, Long.toString(id)));
     }
 
-    @PutMapping("/tv/{id}")
+    @PutMapping(value = "/tv/{id}")
     @Override
     public TvShow replace(@PathVariable Long id, @RequestBody TvShow newElement) {
         return tvShowRepository.findById(id).map(tvShow -> {
@@ -57,22 +57,26 @@ public class TVShowController implements ControllerInterface<TVShowRepository, T
         });
     }
 
-    @DeleteMapping("/tv/{id}")
+    @DeleteMapping(value = "/tv/{id}")
     @Override
     public void delete(@PathVariable Long id) {
         tvShowRepository.deleteById(id);
     }
 
+    @GetMapping(value = "/tv/{title}")
     @Override
     public TvShow getByTitle(String title) {
-        // TODO Auto-generated method stub
-        return null;
+        List<TvShow> tvAll = tvShowRepository.findAll();
+        tvAll.removeIf(tvShow -> (tvShow.getTitle().equals(title)));
+        return getById(tvAll.get(0).getId());
     }
 
+    @GetMapping(value = "/tv/id/{title}")
     @Override
     public Long getIdFromTitle(String title) {
-        // TODO Auto-generated method stub
-        return null;
+        List<TvShow> tvAll = tvShowRepository.findAll();
+        tvAll.removeIf(tvShow -> (tvShow.getTitle().equals(title)));
+        return tvAll.get(0).getId();
     }
 
 }
