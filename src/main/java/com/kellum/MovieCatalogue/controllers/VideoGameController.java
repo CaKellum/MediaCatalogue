@@ -84,16 +84,17 @@ public class VideoGameController implements ControllerInterface<VideoGameReposit
         vgRepository.deleteById(id);
     }
 
+    @GetMapping(value = "")
     @Override
     public VideoGame getByTitle(String title) {
-        // TODO Auto-generated method stub
-        return null;
+        return getById(getIdFromTitle(title));
     }
 
     @Override
     public Long getIdFromTitle(String title) {
-        // TODO Auto-generated method stub
-        return null;
+        List<VideoGame> allVG = all();
+        allVG.removeIf(vg -> (!vg.getTitle().equals(title)));
+        return allVG.get(0).getId();
     }
 
 }
