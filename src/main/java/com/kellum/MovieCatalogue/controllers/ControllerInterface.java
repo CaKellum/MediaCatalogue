@@ -13,6 +13,8 @@ public interface ControllerInterface<T extends JpaRepository<E, Long>, E extends
 
     E getById(Long id);
 
+    E getByTitel(String title);
+
     E replace(Long id, E newElement);
 
     void delete(Long id);
