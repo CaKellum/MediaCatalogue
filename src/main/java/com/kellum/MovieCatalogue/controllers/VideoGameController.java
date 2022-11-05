@@ -84,4 +84,18 @@ public class VideoGameController implements ControllerInterface<VideoGameReposit
         vgRepository.deleteById(id);
     }
 
+    @GetMapping(value = "/video_game/{title}")
+    @Override
+    public VideoGame getByTitle(@PathVariable String title) {
+        return getById(getIdFromTitle(title));
+    }
+
+    @GetMapping(value = "/video_game/id/{title}")
+    @Override
+    public Long getIdFromTitle(@PathVariable String title) {
+        List<VideoGame> allVG = all();
+        allVG.removeIf(vg -> (!vg.getTitle().equals(title)));
+        return allVG.get(0).getId();
+    }
+
 }

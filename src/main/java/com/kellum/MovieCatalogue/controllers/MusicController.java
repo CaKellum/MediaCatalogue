@@ -64,4 +64,18 @@ public class MusicController implements ControllerInterface<MusicRepository, Mus
     public void delete(@PathVariable Long id) {
         musicRepository.deleteById(id);
     }
+
+    @GetMapping(value = "/music/{title}")
+    @Override
+    public Music getByTitle(@PathVariable String title) {
+        return getById(getIdFromTitle(title));
+    }
+
+    @GetMapping(value = "/music/id/{title}")
+    @Override
+    public Long getIdFromTitle(@PathVariable String title) {
+        List<Music> allMusic = all();
+        allMusic.removeIf(music -> (!music.getTitle().equals(title)));
+        return allMusic.get(0).getId();
+    }
 }

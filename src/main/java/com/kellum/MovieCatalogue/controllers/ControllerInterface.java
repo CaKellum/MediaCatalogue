@@ -4,7 +4,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.kellum.MovieCatalogue.model.Media;
 
-import java.util.List;;
+import java.util.List;
 
 public interface ControllerInterface<T extends JpaRepository<E, Long>, E extends Media> {
     List<E> all();
@@ -12,6 +12,10 @@ public interface ControllerInterface<T extends JpaRepository<E, Long>, E extends
     E newElement(E newElement);
 
     E getById(Long id);
+
+    E getByTitle(String title);
+
+    Long getIdFromTitle(String title);
 
     E replace(Long id, E newElement);
 

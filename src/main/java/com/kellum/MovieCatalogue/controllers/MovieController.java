@@ -44,7 +44,7 @@ public class MovieController implements ControllerInterface<MovieRepository, Mov
                 .orElseThrow(() -> new MediaNotFoundException(MediaCategory.MOVIE, Long.toString(id)));
     }
 
-    @PutMapping(value = "movies/{id}")
+    @PutMapping(value = "/movies/{id}")
     @Override
     public Movie replace(@PathVariable Long id, @RequestBody Movie newElement) {
         return movieRepository.findById(id).map(movie -> {
@@ -57,9 +57,23 @@ public class MovieController implements ControllerInterface<MovieRepository, Mov
         });
     }
 
-    @DeleteMapping(value = "movies/{id}")
+    @DeleteMapping(value = "/movies/{id}")
     @Override
     public void delete(@PathVariable Long id) {
         movieRepository.deleteById(id);
+    }
+
+    @GetMapping(value = "/movies/{title}")
+    @Override
+    public Movie getByTitle(@PathVariable String title) {
+        return getById(getIdFromTitle(title));
+    }
+
+    @GetMapping(value = "/movies/id/{title}")
+    @Override
+    public Long getIdFromTitle(@PathVariable String title) {
+        List<Movie> allMovie = all();
+        allMovie.removeIf(movie -> (!movie.getTitle().equals(title)));
+        return allMovie.get(0).getId();
     }
 }

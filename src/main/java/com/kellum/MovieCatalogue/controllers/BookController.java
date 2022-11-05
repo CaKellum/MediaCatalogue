@@ -43,6 +43,12 @@ public class BookController implements ControllerInterface<BookRepository, Book>
                 .orElseThrow(() -> new MediaNotFoundException(MediaCategory.BOOK, Long.toString(id)));
     }
 
+    @GetMapping(value = "/books/{title}")
+    @Override
+    public Book getByTitle(@PathVariable String title) {
+        return getById(getIdFromTitle(title));
+    }
+
     @PutMapping(value = "/books/{id}")
     @Override
     public Book replace(@PathVariable Long id, @RequestBody Book newElement) {
@@ -64,6 +70,14 @@ public class BookController implements ControllerInterface<BookRepository, Book>
     @Override
     public void delete(@PathVariable Long id) {
         bookRepository.deleteById(id);
+    }
+
+    @GetMapping(value = "/books/id/{title}")
+    @Override
+    public Long getIdFromTitle(@PathVariable String title) {
+        List<Book> allBooks = all();
+        allBooks.removeIf(book -> (!book.getTitle().equals(title)));
+        return allBooks.get(0).getId();
     }
 
 }
