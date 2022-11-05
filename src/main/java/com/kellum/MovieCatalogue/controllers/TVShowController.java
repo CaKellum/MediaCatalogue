@@ -69,4 +69,10 @@ public class TVShowController implements ControllerInterface<TVShowRepository, T
         return null;
     }
 
+    @Override
+    public Long getIdFromTitle(String title) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }

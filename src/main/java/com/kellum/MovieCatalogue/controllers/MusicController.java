@@ -70,4 +70,10 @@ public class MusicController implements ControllerInterface<MusicRepository, Mus
         // TODO Auto-generated method stub
         return null;
     }
+
+    @Override
+    public Long getIdFromTitle(String title) {
+        // TODO Auto-generated method stub
+        return null;
+    }
 }

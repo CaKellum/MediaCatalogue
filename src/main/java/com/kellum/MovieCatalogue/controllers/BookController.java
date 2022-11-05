@@ -72,4 +72,10 @@ public class BookController implements ControllerInterface<BookRepository, Book>
         bookRepository.deleteById(id);
     }
 
+    @Override
+    public Long getIdFromTitle(String title) {
+        // TODO Auto-generated method stub
+        return null;
+    }
+
 }
