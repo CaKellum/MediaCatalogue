@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kellum.MovieCatalogue.exceptions.MediaNotFoundException;
 import com.kellum.MovieCatalogue.model.VideoGame;
+import com.kellum.MovieCatalogue.model.VideoGame.VGConsole;
 import com.kellum.MovieCatalogue.model.Media.MediaCategory;
 import com.kellum.MovieCatalogue.repositories.VideoGameRepository;
 
@@ -45,8 +46,17 @@ public class VideoGameController implements ControllerInterface<VideoGameReposit
     @PutMapping(value = "/video_game/{id}")
     @Override
     public VideoGame replace(@PathVariable Long id, @RequestBody VideoGame newElement) {
-        // TODO Auto-generated method stub
-        return null;
+        return vgRepository.findById(id).map( videoGame -> {
+            VGConsole console = VGConsole.valueOf(newElement.getConsole());
+            videoGame.setTitle(newElement.getTitle());
+            videoGame.setConsole(console);
+            videoGame.setCategory(MediaCategory.VIDEO_GAME);
+            videoGame.setFormat(console.getFormat());
+            return vgRepository.save(videoGame);
+        }).orElseGet(() -> {
+            newElement.setId(id);
+            return vgRepository.save(newElement);
+        });
     }
 
     @DeleteMapping(value = "/video_game/{id}")

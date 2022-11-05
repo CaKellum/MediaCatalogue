@@ -11,7 +11,7 @@ import org.hibernate.annotations.PolymorphismType;
 @Polymorphism(type = PolymorphismType.EXPLICIT)
 public class VideoGame extends Media {
     @AllArgsConstructor
-    enum Console {
+    public enum VGConsole {
         PLAYSTATION("playstation", MediaFormat.GAME_DISC), PLAY_STATION_2("playstation 2", MediaFormat.GAME_DISC),
         PLAY_STATION_3("playstation 3", MediaFormat.GAME_DISC),
         PLAY_STATION_4("playstation 4", MediaFormat.GAME_DISC), PLAY_STATION_5("playstation 5", MediaFormat.GAME_DISC),
@@ -36,12 +36,12 @@ public class VideoGame extends Media {
     @Getter
     private String console;
 
-    public VideoGame(String title, Console console) {
+    public VideoGame(String title, VGConsole console) {
         super(title, MediaCategory.VIDEO_GAME, console.getFormat());
         this.setConsole(console);
     }
 
-    private void setConsole(Console console) {
+    public void setConsole(VGConsole console) {
         this.console = console.getValue();
     }
 }

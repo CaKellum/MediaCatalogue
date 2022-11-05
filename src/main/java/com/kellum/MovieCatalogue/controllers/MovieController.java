@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.kellum.MovieCatalogue.model.Movie;
 import com.kellum.MovieCatalogue.model.Media.MediaCategory;
+import com.kellum.MovieCatalogue.model.Media.MediaFormat;
 import com.kellum.MovieCatalogue.repositories.MovieRepository;
 import com.kellum.MovieCatalogue.exceptions.MediaNotFoundException;
 
@@ -48,6 +49,7 @@ public class MovieController implements ControllerInterface<MovieRepository, Mov
     public Movie replace(@PathVariable Long id, @RequestBody Movie newElement) {
         return movieRepository.findById(id).map(movie -> {
             movie.setTitle(newElement.getTitle());
+            movie.setFormat(MediaFormat.valueOf(newElement.getFormat()));
             return movieRepository.save(movie);
         }).orElseGet(() -> {
             newElement.setId(id);
