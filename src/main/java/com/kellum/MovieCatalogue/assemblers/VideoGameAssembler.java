@@ -3,10 +3,11 @@ package com.kellum.MovieCatalogue.assemblers;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
+import org.springframework.stereotype.Component;
 
 import com.kellum.MovieCatalogue.controllers.VideoGameController;
 import com.kellum.MovieCatalogue.model.VideoGame;
-
+@Component
 public class VideoGameAssembler implements RepresentationModelAssembler<VideoGame, EntityModel<VideoGame>> {
 
     @Override
