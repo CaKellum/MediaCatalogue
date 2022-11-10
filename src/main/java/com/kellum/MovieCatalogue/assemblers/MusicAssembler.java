@@ -1,4 +1,5 @@
 package com.kellum.MovieCatalogue.assemblers;
+
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
@@ -14,5 +15,5 @@ public class MusicAssembler implements RepresentationModelAssembler<Music, Entit
                 linkTo(methodOn(MusicController.class).getById(music.getId())).withSelfRel(),
                 linkTo(methodOn(MusicController.class).all()).withRel("music"));
     }
-    
+
 }
