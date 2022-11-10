@@ -13,7 +13,8 @@ public class MovieAssembler implements RepresentationModelAssembler<Movie, Entit
     @Override
     public EntityModel<Movie> toModel(Movie movie) {
         return EntityModel.of(movie, //
-        linkTo(methodOn(MovieController.class).getById(movie.getId())).withSelfRel(),
-        linkTo(methodOn(MovieController.class).all()).withRel("movie"));
+                linkTo(methodOn(MovieController.class).getById(movie.getId())).withSelfRel(),
+                linkTo(methodOn(MovieController.class).all()).withRel("movie"));
+    }
 
 }
