@@ -11,7 +11,7 @@ import com.kellum.MovieCatalogue.exceptions.MediaNotFoundException;
 @ControllerAdvice
 public class MediaNotFoundAdvice {
     @ResponseBody
-    @ExceptionHandler(MediaNotFoundException.class)    
+    @ExceptionHandler(MediaNotFoundException.class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public String mediaNotFoundHandler(MediaNotFoundException mex) {
         return mex.getMessage();
