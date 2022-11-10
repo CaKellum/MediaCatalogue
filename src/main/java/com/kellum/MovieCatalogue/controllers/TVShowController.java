@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kellum.MovieCatalogue.assemblers.TVShowAssembler;
 import com.kellum.MovieCatalogue.exceptions.MediaNotFoundException;
 import com.kellum.MovieCatalogue.model.TvShow;
 import com.kellum.MovieCatalogue.model.Media.MediaCategory;
@@ -19,9 +20,11 @@ import com.kellum.MovieCatalogue.repositories.TVShowRepository;
 @RestController
 public class TVShowController implements ControllerInterface<TVShowRepository, TvShow> {
     private final TVShowRepository tvShowRepository;
+    private final TVShowAssembler tvShowAssembler;
 
-    TVShowController(TVShowRepository repository) {
+    TVShowController(TVShowRepository repository, TVShowAssembler assembler) {
         this.tvShowRepository = repository;
+        this.tvShowAssembler = assembler;
     }
 
     @GetMapping(value = "/tv")

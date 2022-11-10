@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kellum.MovieCatalogue.assemblers.MusicAssembler;
 import com.kellum.MovieCatalogue.exceptions.MediaNotFoundException;
 import com.kellum.MovieCatalogue.model.Music;
 import com.kellum.MovieCatalogue.model.Media.MediaCategory;
@@ -19,9 +20,11 @@ import com.kellum.MovieCatalogue.repositories.MusicRepository;
 @RestController
 public class MusicController implements ControllerInterface<MusicRepository, Music> {
     private final MusicRepository musicRepository;
+    private final MusicAssembler musicAssembler;
 
-    MusicController(MusicRepository repository) {
+    MusicController(MusicRepository repository, MusicAssembler assembler) {
         this.musicRepository = repository;
+        this.musicAssembler = assembler;
     }
 
     @GetMapping(value = "/music")

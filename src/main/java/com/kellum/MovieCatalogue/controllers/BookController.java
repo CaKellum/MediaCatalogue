@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kellum.MovieCatalogue.assemblers.BookAssembler;
 import com.kellum.MovieCatalogue.exceptions.MediaNotFoundException;
 import com.kellum.MovieCatalogue.model.Book;
 import com.kellum.MovieCatalogue.model.Media.MediaCategory;
@@ -19,9 +20,11 @@ import com.kellum.MovieCatalogue.repositories.BookRepository;
 @RestController
 public class BookController implements ControllerInterface<BookRepository, Book> {
     private final BookRepository bookRepository;
+    private final BookAssembler bookAssembler;
 
-    BookController(BookRepository repository) {
+    BookController(BookRepository repository, BookAssembler assembler) {
         this.bookRepository = repository;
+        this.bookAssembler = assembler;
     }
 
     @GetMapping(value = "/books")

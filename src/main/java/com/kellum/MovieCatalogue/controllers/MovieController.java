@@ -11,6 +11,7 @@ import com.kellum.MovieCatalogue.model.Movie;
 import com.kellum.MovieCatalogue.model.Media.MediaCategory;
 import com.kellum.MovieCatalogue.model.Media.MediaFormat;
 import com.kellum.MovieCatalogue.repositories.MovieRepository;
+import com.kellum.MovieCatalogue.assemblers.MovieAssembler;
 import com.kellum.MovieCatalogue.exceptions.MediaNotFoundException;
 
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,9 +21,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 @RestController
 public class MovieController implements ControllerInterface<MovieRepository, Movie>{
     private final MovieRepository movieRepository;
+    private final MovieAssembler movieAssembler;
 
-    MovieController(MovieRepository repository) {
+    MovieController(MovieRepository repository, MovieAssembler assembler) {
         this.movieRepository = repository;
+        this.movieAssembler = assembler;
     }
 
     @GetMapping("/movies")

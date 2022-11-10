@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.kellum.MovieCatalogue.assemblers.VideoGameAssembler;
 import com.kellum.MovieCatalogue.exceptions.MediaNotFoundException;
 import com.kellum.MovieCatalogue.model.VideoGame;
 import com.kellum.MovieCatalogue.model.VideoGame.VGConsole;
@@ -21,9 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RestController
 public class VideoGameController implements ControllerInterface<VideoGameRepository, VideoGame> {
     private final VideoGameRepository vgRepository;
+    private final VideoGameAssembler vgAssembler;
 
-    VideoGameController(VideoGameRepository repository) {
+    VideoGameController(VideoGameRepository repository, VideoGameAssembler assembler) {
         this.vgRepository = repository;
+        this.vgAssembler = assembler;
     }
 
     //MARK: Get Lists of Games
