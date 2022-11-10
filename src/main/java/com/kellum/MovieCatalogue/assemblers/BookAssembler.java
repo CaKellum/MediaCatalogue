@@ -2,6 +2,11 @@ package com.kellum.MovieCatalogue.assemblers;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
@@ -14,9 +19,17 @@ public class BookAssembler implements RepresentationModelAssembler<Book, EntityM
 
     @Override
     public EntityModel<Book> toModel(Book book) {
-        return EntityModel.of(book, 
+        return EntityModel.of(book,
                 linkTo(methodOn(BookController.class).getById(book.getId())).withSelfRel(),
-                linkTo(methodOn(BookController.class).all()).withRel("books"));
+                linkTo(methodOn(BookController.class).all()).withSelfRel());
+    }
+
+    @Override
+    public CollectionModel<EntityModel<Book>> toCollectionModel(Iterable<? extends Book> list) {
+        ArrayList<Book> listOfBooks = new ArrayList<>();
+        list.forEach(book -> { listOfBooks.add(book); });
+        List<EntityModel<Book>> boookEntityList = listOfBooks.stream().map(this::toModel).collect(Collectors.toList());
+        return CollectionModel.of(boookEntityList, linkTo(methodOn(BookController.class).all()).withSelfRel());
     }
 
 }

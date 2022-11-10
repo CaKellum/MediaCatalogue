@@ -1,6 +1,12 @@
 package com.kellum.MovieCatalogue.controllers;
 
 import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +24,6 @@ import com.kellum.MovieCatalogue.model.Media.MediaCategory;
 import com.kellum.MovieCatalogue.repositories.VideoGameRepository;
 import org.springframework.web.bind.annotation.RequestParam;
 
-
 @RestController
 public class VideoGameController implements ControllerInterface<VideoGameRepository, VideoGame> {
     private final VideoGameRepository vgRepository;
@@ -29,22 +34,27 @@ public class VideoGameController implements ControllerInterface<VideoGameReposit
         this.vgAssembler = assembler;
     }
 
-    //MARK: Get Lists of Games
+    // MARK: Get Lists of Games
 
     @GetMapping(value = "/video_games")
     @Override
-    public List<VideoGame> all() {
-        return vgRepository.findAll();
+    public CollectionModel<EntityModel<VideoGame>> all() {
+        List<EntityModel<VideoGame>> list = vgRepository.findAll().stream().map(vgAssembler::toModel)
+                .collect(Collectors.toList());
+        return CollectionModel.of(list, linkTo(methodOn(this.getClass()).all()).withSelfRel());
     }
 
     @GetMapping(value = "/video_games/{console}")
-    public List<VideoGame> getVideoGamesForConsole(@RequestParam String console) {
+    public CollectionModel<EntityModel<VideoGame>> getVideoGamesForConsole(@RequestParam String console) {
         List<VideoGame> vGames = vgRepository.findAll();
         vGames.removeIf(videoGame -> (!videoGame.getCategory().equals(console)));
-        return vGames;
+        List<EntityModel<VideoGame>> vGamesList = vGames.stream().map(vgAssembler::toModel)
+                .collect(Collectors.toList());
+        return CollectionModel.of(vGamesList,
+                linkTo(methodOn(this.getClass()).getVideoGamesForConsole(console)).withSelfRel());
     }
 
-    //MARK: Add Video Game
+    // MARK: Add Video Game
 
     @PostMapping(value = "/video_games")
     @Override
@@ -52,7 +62,7 @@ public class VideoGameController implements ControllerInterface<VideoGameReposit
         return vgRepository.save(newElement);
     }
 
-    //MARK: Get single video game
+    // MARK: Get single video game
 
     @GetMapping(value = "/video_game/{id}")
     @Override
@@ -61,12 +71,12 @@ public class VideoGameController implements ControllerInterface<VideoGameReposit
                 .orElseThrow(() -> new MediaNotFoundException(MediaCategory.VIDEO_GAME, Long.toString(id)));
     }
 
-    //MARK: Update single video game
+    // MARK: Update single video game
 
     @PutMapping(value = "/video_game/{id}")
     @Override
     public VideoGame replace(@PathVariable Long id, @RequestBody VideoGame newElement) {
-        return vgRepository.findById(id).map( videoGame -> {
+        return vgRepository.findById(id).map(videoGame -> {
             VGConsole console = VGConsole.valueOf(newElement.getConsole());
             videoGame.setTitle(newElement.getTitle());
             videoGame.setConsole(console);
@@ -79,7 +89,7 @@ public class VideoGameController implements ControllerInterface<VideoGameReposit
         });
     }
 
-    //MARK: Delete single video game
+    // MARK: Delete single video game
 
     @DeleteMapping(value = "/video_game/{id}")
     @Override
@@ -96,7 +106,7 @@ public class VideoGameController implements ControllerInterface<VideoGameReposit
     @GetMapping(value = "/video_game/id/{title}")
     @Override
     public Long getIdFromTitle(@PathVariable String title) {
-        List<VideoGame> allVG = all();
+        List<VideoGame> allVG = vgRepository.findAll();
         allVG.removeIf(vg -> (!vg.getTitle().equals(title)));
         return allVG.get(0).getId();
     }
