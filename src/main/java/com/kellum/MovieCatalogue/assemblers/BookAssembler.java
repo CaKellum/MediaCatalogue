@@ -27,9 +27,11 @@ public class BookAssembler implements RepresentationModelAssembler<Book, EntityM
     @Override
     public CollectionModel<EntityModel<Book>> toCollectionModel(Iterable<? extends Book> list) {
         ArrayList<Book> listOfBooks = new ArrayList<>();
-        list.forEach(book -> { listOfBooks.add(book); });
-        List<EntityModel<Book>> boookEntityList = listOfBooks.stream().map(this::toModel).collect(Collectors.toList());
-        return CollectionModel.of(boookEntityList, linkTo(methodOn(BookController.class).all()).withSelfRel());
+        list.forEach(book -> {
+            listOfBooks.add(book);
+        });
+        List<EntityModel<Book>> bookEntityList = listOfBooks.stream().map(this::toModel).collect(Collectors.toList());
+        return CollectionModel.of(bookEntityList, linkTo(methodOn(BookController.class).all()).withSelfRel());
     }
 
 }
