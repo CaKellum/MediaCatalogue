@@ -1,23 +1,25 @@
 package com.kellum.MovieCatalogue.controllers;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.http.ResponseEntity;
 
 import com.kellum.MovieCatalogue.model.Media;
 
-import java.util.List;
 
 public interface ControllerInterface<T extends JpaRepository<E, Long>, E extends Media> {
-    List<E> all();
+    CollectionModel<EntityModel<E>> all();
 
-    E newElement(E newElement);
+    EntityModel<E> newElement(E newElement);
 
-    E getById(Long id);
+    EntityModel<E> getById(Long id);
 
-    E getByTitle(String title);
+    EntityModel<E> getByTitle(String title);
 
-    Long getIdFromTitle(String title);
+    EntityModel<Long> getIdFromTitle(String title);
 
-    E replace(Long id, E newElement);
+    EntityModel<E> replace(Long id, E newElement);
 
-    void delete(Long id);
+    ResponseEntity<?> delete(Long id);
 }
