@@ -2,6 +2,11 @@ package com.kellum.MovieCatalogue.controllers;
 
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,27 +34,28 @@ public class TVShowController implements ControllerInterface<TVShowRepository, T
 
     @GetMapping(value = "/tv")
     @Override
-    public List<TvShow> all() {
-        return tvShowRepository.findAll();
+    public  CollectionModel<EntityModel<TvShow>> all() {
+        return tvShowAssembler.toCollectionModel(tvShowRepository.findAll());
     }
 
     @PostMapping(value = "/tv")
     @Override
-    public TvShow newElement(@RequestBody TvShow newElement) {
-        return tvShowRepository.save(newElement);
+    public EntityModel<TvShow> newElement(@RequestBody TvShow newElement) {
+        return tvShowAssembler.toModel(tvShowRepository.save(newElement));
     }
 
     @GetMapping(value = "/tv/{id}")
     @Override
-    public TvShow getById(@PathVariable Long id) {
-        return tvShowRepository.findById(id)
+    public EntityModel<TvShow> getById(@PathVariable Long id) {
+        TvShow tv =  tvShowRepository.findById(id)
                 .orElseThrow(() -> new MediaNotFoundException(MediaCategory.TV_SHOW, Long.toString(id)));
+        return tvShowAssembler.toModel(tv);
     }
 
     @PutMapping(value = "/tv/{id}")
     @Override
-    public TvShow replace(@PathVariable Long id, @RequestBody TvShow newElement) {
-        return tvShowRepository.findById(id).map(tvShow -> {
+    public EntityModel<TvShow> replace(@PathVariable Long id, @RequestBody TvShow newElement) {
+        TvShow tv = tvShowRepository.findById(id).map(tvShow -> {
             tvShow.setTitle(newElement.getTitle());
             tvShow.setFormat(MediaFormat.valueOf(newElement.getFormat()));
             tvShow.setCategory(MediaCategory.TV_SHOW);
@@ -58,26 +64,29 @@ public class TVShowController implements ControllerInterface<TVShowRepository, T
             newElement.setId(id);
             return tvShowRepository.save(newElement);
         });
+        return tvShowAssembler.toModel(tv);
     }
 
     @DeleteMapping(value = "/tv/{id}")
     @Override
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         tvShowRepository.deleteById(id);
+        return ResponseEntity.ok().body(id);
     }
 
     @GetMapping(value = "/tv/{title}")
     @Override
-    public TvShow getByTitle(@PathVariable String title) {
-        return getById(getIdFromTitle(title));
+    public EntityModel<TvShow> getByTitle(@PathVariable String title) {
+        return getById(getIdFromTitle(title).getContent());
     }
 
     @GetMapping(value = "/tv/id/{title}")
     @Override
-    public Long getIdFromTitle(@PathVariable String title) {
+    public EntityModel<Long> getIdFromTitle(@PathVariable String title) {
         List<TvShow> tvAll = tvShowRepository.findAll();
         tvAll.removeIf(tvShow -> (!tvShow.getTitle().equals(title)));
-        return tvAll.get(0).getId();
+        return EntityModel.of(tvAll.get(0).getId(),
+                linkTo(methodOn(this.getClass()).getIdFromTitle(title)).withSelfRel());
     }
 
 }

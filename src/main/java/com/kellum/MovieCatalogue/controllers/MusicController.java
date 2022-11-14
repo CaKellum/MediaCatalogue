@@ -2,6 +2,11 @@ package com.kellum.MovieCatalogue.controllers;
 
 import java.util.List;
 
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
+import org.springframework.hateoas.CollectionModel;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,27 +34,28 @@ public class MusicController implements ControllerInterface<MusicRepository, Mus
 
     @GetMapping(value = "/music")
     @Override
-    public List<Music> all() {
-        return musicRepository.findAll();
+    public CollectionModel<EntityModel<Music>> all() {
+        return musicAssembler.toCollectionModel(musicRepository.findAll());
     }
 
     @PostMapping(value = "/music")
     @Override
-    public Music newElement(@RequestBody Music newElement) {
-        return musicRepository.save(newElement);
+    public EntityModel<Music> newElement(@RequestBody Music newElement) {
+        return musicAssembler.toModel(musicRepository.save(newElement));
     }
 
     @GetMapping(value = "/music/{id}")
     @Override
-    public Music getById(@PathVariable Long id) {
-        return musicRepository.findById(id)
+    public EntityModel<Music> getById(@PathVariable Long id) {
+        Music music = musicRepository.findById(id)
                 .orElseThrow(() -> new MediaNotFoundException(MediaCategory.MUSIC, Long.toString(id)));
+        return musicAssembler.toModel(music);
     }
 
     @PutMapping(value = "/music/{id}")
     @Override
-    public Music replace(@PathVariable Long id, @RequestBody Music newElement) {
-        return musicRepository.findById(id).map(music -> {
+    public EntityModel<Music> replace(@PathVariable Long id, @RequestBody Music newElement) {
+        Music updateMusic = musicRepository.findById(id).map(music -> {
             music.setArtists(newElement.getArtists());
             music.setTrackList(newElement.getTrackList());
             music.setCategory(MediaCategory.MUSIC);
@@ -60,25 +66,28 @@ public class MusicController implements ControllerInterface<MusicRepository, Mus
             newElement.setId(id);
             return musicRepository.save(newElement);
         });
+        return musicAssembler.toModel(updateMusic);
     }
 
     @DeleteMapping(value = "/music/{id}")
     @Override
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         musicRepository.deleteById(id);
+        return ResponseEntity.ok().body(id);
     }
 
     @GetMapping(value = "/music/{title}")
     @Override
-    public Music getByTitle(@PathVariable String title) {
-        return getById(getIdFromTitle(title));
+    public EntityModel<Music> getByTitle(@PathVariable String title) {
+        return getById(getIdFromTitle(title).getContent());
     }
 
     @GetMapping(value = "/music/id/{title}")
     @Override
-    public Long getIdFromTitle(@PathVariable String title) {
-        List<Music> allMusic = all();
+    public EntityModel<Long> getIdFromTitle(@PathVariable String title) {
+        List<Music> allMusic = musicRepository.findAll();
         allMusic.removeIf(music -> (!music.getTitle().equals(title)));
-        return allMusic.get(0).getId();
+        return EntityModel.of(allMusic.get(0).getId(),
+                linkTo(methodOn(this.getClass()).getIdFromTitle(title)).withSelfRel());
     }
 }

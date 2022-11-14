@@ -5,6 +5,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.http.ResponseEntity;
 
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
@@ -39,44 +40,40 @@ public class VideoGameController implements ControllerInterface<VideoGameReposit
     @GetMapping(value = "/video_games")
     @Override
     public CollectionModel<EntityModel<VideoGame>> all() {
-        List<EntityModel<VideoGame>> list = vgRepository.findAll().stream().map(vgAssembler::toModel)
-                .collect(Collectors.toList());
-        return CollectionModel.of(list, linkTo(methodOn(this.getClass()).all()).withSelfRel());
+        return vgAssembler.toCollectionModel(vgRepository.findAll());
     }
 
     @GetMapping(value = "/video_games/{console}")
     public CollectionModel<EntityModel<VideoGame>> getVideoGamesForConsole(@RequestParam String console) {
         List<VideoGame> vGames = vgRepository.findAll();
         vGames.removeIf(videoGame -> (!videoGame.getCategory().equals(console)));
-        List<EntityModel<VideoGame>> vGamesList = vGames.stream().map(vgAssembler::toModel)
-                .collect(Collectors.toList());
-        return CollectionModel.of(vGamesList,
-                linkTo(methodOn(this.getClass()).getVideoGamesForConsole(console)).withSelfRel());
+        return vgAssembler.toCollectionModel(vGames);
     }
 
     // MARK: Add Video Game
 
     @PostMapping(value = "/video_games")
     @Override
-    public VideoGame newElement(@RequestBody VideoGame newElement) {
-        return vgRepository.save(newElement);
+    public EntityModel<VideoGame> newElement(@RequestBody VideoGame newElement) {
+        return vgAssembler.toModel(vgRepository.save(newElement));
     }
 
     // MARK: Get single video game
 
     @GetMapping(value = "/video_game/{id}")
     @Override
-    public VideoGame getById(@PathVariable Long id) {
-        return vgRepository.findById(id)
+    public EntityModel<VideoGame> getById(@PathVariable Long id) {
+        VideoGame vg = vgRepository.findById(id)
                 .orElseThrow(() -> new MediaNotFoundException(MediaCategory.VIDEO_GAME, Long.toString(id)));
+        return vgAssembler.toModel(vg);
     }
 
     // MARK: Update single video game
 
     @PutMapping(value = "/video_game/{id}")
     @Override
-    public VideoGame replace(@PathVariable Long id, @RequestBody VideoGame newElement) {
-        return vgRepository.findById(id).map(videoGame -> {
+    public EntityModel<VideoGame> replace(@PathVariable Long id, @RequestBody VideoGame newElement) {
+        VideoGame vg = vgRepository.findById(id).map(videoGame -> {
             VGConsole console = VGConsole.valueOf(newElement.getConsole());
             videoGame.setTitle(newElement.getTitle());
             videoGame.setConsole(console);
@@ -87,28 +84,31 @@ public class VideoGameController implements ControllerInterface<VideoGameReposit
             newElement.setId(id);
             return vgRepository.save(newElement);
         });
+        return vgAssembler.toModel(vg);
     }
 
     // MARK: Delete single video game
 
     @DeleteMapping(value = "/video_game/{id}")
     @Override
-    public void delete(@PathVariable Long id) {
+    public ResponseEntity<?> delete(@PathVariable Long id) {
         vgRepository.deleteById(id);
+        return ResponseEntity.ok().body(id);
     }
 
     @GetMapping(value = "/video_game/{title}")
     @Override
-    public VideoGame getByTitle(@PathVariable String title) {
-        return getById(getIdFromTitle(title));
+    public EntityModel<VideoGame> getByTitle(@PathVariable String title) {
+        return getById(getIdFromTitle(title).getContent());
     }
 
     @GetMapping(value = "/video_game/id/{title}")
     @Override
-    public Long getIdFromTitle(@PathVariable String title) {
+    public EntityModel<Long> getIdFromTitle(@PathVariable String title) {
         List<VideoGame> allVG = vgRepository.findAll();
         allVG.removeIf(vg -> (!vg.getTitle().equals(title)));
-        return allVG.get(0).getId();
+        return EntityModel.of(allVG.get(0).getId(),
+                linkTo(methodOn(this.getClass()).getIdFromTitle(title)).withSelfRel());
     }
 
 }
