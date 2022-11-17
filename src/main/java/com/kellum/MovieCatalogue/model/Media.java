@@ -1,7 +1,5 @@
 package com.kellum.MovieCatalogue.model;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
@@ -43,11 +41,6 @@ public abstract class Media {
         private String value;
     }
 
-    @Id
-    @GeneratedValue
-    @Getter
-    @Setter
-    private long id;
     @Getter
     @Setter
     String title;

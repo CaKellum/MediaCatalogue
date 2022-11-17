@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 import org.hibernate.annotations.Polymorphism;
 import org.hibernate.annotations.PolymorphismType;
 
@@ -16,10 +19,17 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Music extends Media {
 
+    @Id
+    @GeneratedValue
+    @Getter
+    @Setter
+    private long id;
+
     @ElementCollection
     @Getter
     @Setter
     private List<String> trackList;
+
     @ElementCollection
     @Getter
     @Setter

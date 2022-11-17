@@ -3,8 +3,12 @@ package com.kellum.MovieCatalogue.model;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+
 import org.hibernate.annotations.Polymorphism;
 import org.hibernate.annotations.PolymorphismType;
 
@@ -34,6 +38,12 @@ public class VideoGame extends Media {
         @Getter
         private MediaFormat format;
     }
+
+    @Id
+    @GeneratedValue
+    @Getter
+    @Setter
+    private long id;
 
     @Getter
     private String console;
