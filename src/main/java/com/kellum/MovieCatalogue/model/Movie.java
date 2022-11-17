@@ -22,7 +22,7 @@ public class Movie extends Media {
     @Setter
     private long id;
 
-    Movie(String title, MediaFormat format) {
+    public Movie(String title, MediaFormat format) {
         super(title, MediaCategory.MOVIE, format);
     }
 }

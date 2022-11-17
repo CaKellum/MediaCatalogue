@@ -59,7 +59,7 @@ public abstract class Media {
     @Getter
     String format;
 
-    Media(String title, MediaCategory category, MediaFormat format) {
+    public Media(String title, MediaCategory category, MediaFormat format) {
         this.setCategory(category);
         this.setTitle(title);
         this.setFormat(format);

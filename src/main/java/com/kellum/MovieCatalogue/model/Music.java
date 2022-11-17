@@ -35,7 +35,7 @@ public class Music extends Media {
     @Setter
     private List<String> artists;
 
-    Music(String title, List<String> artists, List<String> trackList, MediaFormat format) {
+    public Music(String title, List<String> artists, List<String> trackList, MediaFormat format) {
         super(title, MediaCategory.MUSIC, format);
         this.artists = artists;
         this.trackList = trackList;
