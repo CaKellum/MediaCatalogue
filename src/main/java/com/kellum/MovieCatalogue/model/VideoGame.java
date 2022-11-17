@@ -2,6 +2,7 @@ package com.kellum.MovieCatalogue.model;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.Entity;
 import org.hibernate.annotations.Polymorphism;
@@ -9,6 +10,7 @@ import org.hibernate.annotations.PolymorphismType;
 
 @Entity
 @Polymorphism(type = PolymorphismType.EXPLICIT)
+@NoArgsConstructor
 public class VideoGame extends Media {
     @AllArgsConstructor
     public enum VGConsole {

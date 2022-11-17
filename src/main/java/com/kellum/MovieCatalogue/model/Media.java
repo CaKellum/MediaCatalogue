@@ -4,20 +4,20 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
-import javax.persistence.MappedSuperclass;
 
 import com.kellum.MovieCatalogue.logging.KellumLogger;
 
 import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@MappedSuperclass
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
 @ToString(includeFieldNames = true)
 @EqualsAndHashCode
+@NoArgsConstructor
 public abstract class Media {
 
     @AllArgsConstructor

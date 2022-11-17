@@ -8,10 +8,12 @@ import org.hibernate.annotations.Polymorphism;
 import org.hibernate.annotations.PolymorphismType;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
 @Polymorphism(type = PolymorphismType.EXPLICIT)
+@NoArgsConstructor
 public class Book extends Media {
 
     @ElementCollection
