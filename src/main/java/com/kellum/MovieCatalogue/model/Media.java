@@ -1,5 +1,8 @@
 package com.kellum.MovieCatalogue.model;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
 
@@ -16,6 +19,7 @@ import lombok.ToString;
 @ToString(includeFieldNames = true)
 @EqualsAndHashCode
 @NoArgsConstructor
+@Entity
 public abstract class Media {
 
     @AllArgsConstructor
@@ -40,6 +44,12 @@ public abstract class Media {
         @Getter
         private String value;
     }
+
+    @Id
+    @GeneratedValue
+    @Getter
+    @Setter
+    private long id;
 
     @Getter
     @Setter
