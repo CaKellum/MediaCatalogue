@@ -7,7 +7,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
-import com.kellum.MovieCatalogue.logging.KellumLogger;
 import com.kellum.MovieCatalogue.model.Book;
 import com.kellum.MovieCatalogue.model.Movie;
 import com.kellum.MovieCatalogue.model.Music;

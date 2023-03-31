@@ -1,7 +1,6 @@
 package com.kellum.MovieCatalogue.controllers;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
